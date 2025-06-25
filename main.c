@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-static int	check_args(char **av)
+int	check_args(char **av)
 {
 	if (ft_atoi(av[1]) < 1 || ft_atoi(av[1]) >= 250)
 		return (ft_error("Error: argument 1 is not good\n"));
@@ -25,7 +25,7 @@ static int	check_args(char **av)
 	return (0);
 }
 
-static void	assign_mutex_pointers(t_philo *philos, t_program *prog,
+void	assign_mutex_pointers(t_philo *philos, t_program *prog,
 				t_thread_arg *args, int num_philos)
 {
 	int	i;
@@ -42,7 +42,7 @@ static void	assign_mutex_pointers(t_philo *philos, t_program *prog,
 	}
 }
 
-static void	cleanup(t_philo *philos, pthread_mutex_t *forks, t_program *prog,
+void	cleanup(t_philo *philos, pthread_mutex_t *forks, t_program *prog,
 				int num_philos)
 {
 	int	i;
@@ -73,6 +73,18 @@ int	setup_env(t_env *env, char **av)
 	return (1);
 }
 
+void free_all(t_env env)
+{
+	if (env.philos)
+		free(env.philos);
+	if (env.args)
+		free(env.args);
+	if (env.forks)
+		free(env.forks);
+	if (env.prog)
+		free(env.prog);
+}
+
 int	main(int ac, char **av)
 {
 	t_env			env;
@@ -83,20 +95,17 @@ int	main(int ac, char **av)
 	env.args = malloc(sizeof(t_thread_arg) * 250);
 	env.prog = malloc(sizeof(t_program));
 	if (!env.philos || !env.forks || !env.args || !env.prog)
-		return (ft_error("Allocation failed\n"));
+		return (free_all(env),ft_error("Allocation failed\n"));
 	if (ac != 5 && ac != 6)
-		return (ft_error("Wrong argument count\n"));
+		return (free_all(env),ft_error("Wrong argument count\n"));
 	if (check_args(av))
-		return (ft_error("Error: End of the program\n"));
+		return (free_all(env), ft_error("Error: End of the program\n"));
 	if (!setup_env(&env, av))
 		return (0);
 	env.monitor = &monitor;
 	create_threads(&env);
 	join_threads(env.philos, monitor, env.num_philos);
 	cleanup(env.philos, env.forks, env.prog, env.num_philos);
-	free(env.philos);
-	free(env.forks);
-	free(env.args);
-	free(env.prog);
+	free_all(env);
 	return (0);
 }
