@@ -73,18 +73,6 @@ int	setup_env(t_env *env, char **av)
 	return (1);
 }
 
-void	free_all(t_env env)
-{
-	if (env.philos)
-		free(env.philos);
-	if (env.args)
-		free(env.args);
-	if (env.forks)
-		free(env.forks);
-	if (env.prog)
-		free(env.prog);
-}
-
 int	main(int ac, char **av)
 {
 	t_env			env;

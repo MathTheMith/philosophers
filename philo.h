@@ -69,8 +69,7 @@ typedef struct s_env
 	int				num_philos;
 }	t_env;
 
-
-int	handle_single_philo(t_philo *philo, t_program *prog);
+int		handle_single_philo(t_philo *philo, t_program *prog);
 void	release_forks(t_philo *philo);
 void	ft_usleep(size_t milliseconds, t_program *prog);
 int		ft_error(const char *msg);
@@ -79,6 +78,7 @@ size_t	ft_strlen(const char *msg);
 int		init_philo(char **av, t_philo *philos, pthread_mutex_t *forks,
 			size_t start_time);
 size_t	get_current_time(void);
+void	free_all(t_env env);
 void	*philo_routine(void *arg);
 void	*monitor_routine(void *arg);
 int		is_dead(t_program *prog);
@@ -91,5 +91,6 @@ int		check_all_philosophers(t_program *prog);
 int		check_philosopher_death(t_program *prog, int i);
 int		take_forks(t_philo *philo, t_program *prog);
 void	get_fork_order(t_philo *philo, pthread_mutex_t **first,
-		pthread_mutex_t **second);
+			pthread_mutex_t **second);
+
 #endif

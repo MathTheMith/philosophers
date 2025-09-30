@@ -27,18 +27,16 @@ void	get_fork_order(t_philo *philo, pthread_mutex_t **first,
 	}
 }
 
-void	release_forks(t_philo *philo)
+void	free_all(t_env env)
 {
-	if (philo->has_right_fork)
-	{
-		pthread_mutex_unlock(philo->r_fork);
-		philo->has_right_fork = 0;
-	}
-	if (philo->has_left_fork)
-	{
-		pthread_mutex_unlock(philo->l_fork);
-		philo->has_left_fork = 0;
-	}
+	if (env.philos)
+		free(env.philos);
+	if (env.args)
+		free(env.args);
+	if (env.forks)
+		free(env.forks);
+	if (env.prog)
+		free(env.prog);
 }
 
 int	handle_single_philo(t_philo *philo, t_program *prog)

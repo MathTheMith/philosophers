@@ -12,6 +12,20 @@
 
 #include "philo.h"
 
+void	release_forks(t_philo *philo)
+{
+	if (philo->has_right_fork)
+	{
+		pthread_mutex_unlock(philo->r_fork);
+		philo->has_right_fork = 0;
+	}
+	if (philo->has_left_fork)
+	{
+		pthread_mutex_unlock(philo->l_fork);
+		philo->has_left_fork = 0;
+	}
+}
+
 static int	take_first_fork(t_philo *philo, t_program *prog,
 				pthread_mutex_t *first_fork)
 {
