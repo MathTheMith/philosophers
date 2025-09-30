@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 04:49:53 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/25 04:49:53 by marvin           ###   ########.fr       */
+/*   Created: 2025/09/30 23:35:34 by marvin            #+#    #+#             */
+/*   Updated: 2025/09/30 23:35:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	get_fork_order(t_philo *philo, pthread_mutex_t **first,
+void	get_fork_order(t_philo *philo, pthread_mutex_t **first,
 		pthread_mutex_t **second)
 {
 	if (philo->id % 2 == 0)
@@ -27,37 +27,27 @@ static void	get_fork_order(t_philo *philo, pthread_mutex_t **first,
 	}
 }
 
-static int	handle_single_philo(t_philo *philo, t_program *prog)
+void	release_forks(t_philo *philo)
 {
-	print_status(philo, prog, "has taken a fork");
-	usleep(philo->time_to_die * 1000);
-	return (0);
+	if (philo->has_right_fork)
+	{
+		pthread_mutex_unlock(philo->r_fork);
+		philo->has_right_fork = 0;
+	}
+	if (philo->has_left_fork)
+	{
+		pthread_mutex_unlock(philo->l_fork);
+		philo->has_left_fork = 0;
+	}
 }
 
-int	take_forks(t_philo *philo, t_program *prog)
+int	handle_single_philo(t_philo *philo, t_program *prog)
 {
-	pthread_mutex_t	*first_fork;
-	pthread_mutex_t	*second_fork;
-
-	if (philo->num_of_philos == 1)
-		return (handle_single_philo(philo, prog));
-	get_fork_order(philo, &first_fork, &second_fork);
-	pthread_mutex_lock(first_fork);
-	if (is_dead(prog))
-	{
-		pthread_mutex_unlock(first_fork);
-		return (0);
-	}
+	pthread_mutex_lock(philo->l_fork);
 	print_status(philo, prog, "has taken a fork");
-	pthread_mutex_lock(second_fork);
-	if (is_dead(prog))
-	{
-		pthread_mutex_unlock(second_fork);
-		pthread_mutex_unlock(first_fork);
-		return (0);
-	}
-	print_status(philo, prog, "has taken a fork");
-	return (1);
+	ft_usleep(philo->time_to_die, prog);
+	pthread_mutex_unlock(philo->l_fork);
+	return (0);
 }
 
 static int	check_all_ate(t_program *prog, int i)

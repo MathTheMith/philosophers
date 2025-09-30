@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 04:49:53 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/25 04:49:53 by marvin           ###   ########.fr       */
+/*   Created: 2025/09/30 23:36:56 by marvin            #+#    #+#             */
+/*   Updated: 2025/09/30 23:36:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,7 @@ void	eat(t_philo *philo, t_program *prog)
 	philo->last_meal = get_current_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&prog->meal_lock);
-	usleep(philo->time_to_eat * 1000);
-}
-
-static size_t	calculate_think_time(t_philo *philo)
-{
-	size_t	think_time;
-
-	think_time = philo->time_to_eat;
-	if (philo->time_to_eat > philo->time_to_sleep)
-		think_time = philo->time_to_eat - philo->time_to_sleep;
-	return (think_time);
+	ft_usleep(philo->time_to_eat, prog);
 }
 
 static void	philo_think(t_philo *philo, t_program *prog)
@@ -37,19 +27,19 @@ static void	philo_think(t_philo *philo, t_program *prog)
 	size_t	think_time;
 
 	print_status(philo, prog, "is thinking");
-	if (philo->num_of_philos % 2 == 1)
-	{
-		think_time = calculate_think_time(philo);
-		usleep(think_time * 1000);
-	}
-	else
-		usleep(1000);
+	if (philo->num_of_philos % 2 == 0)
+		return ;
+	think_time = 0;
+	if (philo->time_to_eat > philo->time_to_sleep)
+		think_time = (philo->time_to_eat - philo->time_to_sleep) / 2;
+	if (think_time > 0)
+		ft_usleep(think_time, prog);
 }
 
 static int	handle_single_philo_routine(t_philo *philo, t_program *prog)
 {
 	print_status(philo, prog, "has taken a fork");
-	usleep(philo->time_to_die * 1000);
+	ft_usleep(philo->time_to_die, prog);
 	return (0);
 }
 
@@ -61,17 +51,15 @@ int	philo_cycle(t_philo *philo, t_program *prog)
 		return (0);
 	if (is_dead(prog))
 	{
-		pthread_mutex_unlock(philo->r_fork);
-		pthread_mutex_unlock(philo->l_fork);
+		release_forks(philo);
 		return (0);
 	}
 	eat(philo, prog);
-	pthread_mutex_unlock(philo->r_fork);
-	pthread_mutex_unlock(philo->l_fork);
+	release_forks(philo);
 	if (is_dead(prog))
 		return (0);
 	print_status(philo, prog, "is sleeping");
-	usleep(philo->time_to_sleep * 1000);
+	ft_usleep(philo->time_to_sleep, prog);
 	if (is_dead(prog))
 		return (0);
 	philo_think(philo, prog);

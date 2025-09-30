@@ -39,6 +39,8 @@ int	init_philo(char **av, t_philo *philos, pthread_mutex_t *forks,
 		philos[i].start_time = start_time;
 		philos[i].last_meal = start_time;
 		philos[i].meals_eaten = 0;
+		philos[i].has_left_fork = 0;
+		philos[i].has_right_fork = 0;
 		philos[i].l_fork = &forks[i];
 		philos[i].r_fork = &forks[(i + 1) % ft_atoi(av[1])];
 		i++;

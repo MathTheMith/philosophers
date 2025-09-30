@@ -32,6 +32,8 @@ typedef struct s_philo
 	size_t			start_time;
 	int				num_of_philos;
 	int				num_times_to_eat;
+	int				has_left_fork;
+	int				has_right_fork;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*write_lock;
@@ -67,6 +69,10 @@ typedef struct s_env
 	int				num_philos;
 }	t_env;
 
+
+int	handle_single_philo(t_philo *philo, t_program *prog);
+void	release_forks(t_philo *philo);
+void	ft_usleep(size_t milliseconds, t_program *prog);
 int		ft_error(const char *msg);
 int		ft_atoi(const char *str);
 size_t	ft_strlen(const char *msg);
@@ -84,5 +90,6 @@ int		philo_cycle(t_philo *philo, t_program *prog);
 int		check_all_philosophers(t_program *prog);
 int		check_philosopher_death(t_program *prog, int i);
 int		take_forks(t_philo *philo, t_program *prog);
-
+void	get_fork_order(t_philo *philo, pthread_mutex_t **first,
+		pthread_mutex_t **second);
 #endif

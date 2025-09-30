@@ -73,7 +73,7 @@ int	setup_env(t_env *env, char **av)
 	return (1);
 }
 
-void free_all(t_env env)
+void	free_all(t_env env)
 {
 	if (env.philos)
 		free(env.philos);
@@ -95,9 +95,9 @@ int	main(int ac, char **av)
 	env.args = malloc(sizeof(t_thread_arg) * 250);
 	env.prog = malloc(sizeof(t_program));
 	if (!env.philos || !env.forks || !env.args || !env.prog)
-		return (free_all(env),ft_error("Allocation failed\n"));
+		return (free_all(env), ft_error("Allocation failed\n"));
 	if (ac != 5 && ac != 6)
-		return (free_all(env),ft_error("Wrong argument count\n"));
+		return (free_all(env), ft_error("Wrong argument count\n"));
 	if (check_args(av))
 		return (free_all(env), ft_error("Error: End of the program\n"));
 	if (!setup_env(&env, av))

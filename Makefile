@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 07:28:08 by math              #+#    #+#              #
-#    Updated: 2025/06/25 05:51:30 by marvin           ###   ########.fr        #
+#    Updated: 2025/09/30 23:39:49 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC     =   main.c \
 			routine.c \
 			philo_actions.c \
 			fork_utils.c \
+			fork_management.c \
 
 
 DIR_OBJ = obj
