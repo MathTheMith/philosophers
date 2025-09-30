@@ -84,7 +84,7 @@ void	*monitor_routine(void *arg);
 int		is_dead(t_program *prog);
 void	print_status(t_philo *philo, t_program *prog, const char *msg);
 void	init_mutexes(pthread_mutex_t *forks, t_program *prog, int num_philos);
-void	create_threads(t_env *env);
+int		create_threads(t_env *env);
 void	join_threads(t_philo *philos, pthread_t monitor, int num_philos);
 int		philo_cycle(t_philo *philo, t_program *prog);
 int		check_all_philosophers(t_program *prog);

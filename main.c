@@ -75,19 +75,23 @@ int	setup_env(t_env *env, char **av)
 
 int	main(int ac, char **av)
 {
-	t_env			env;
-	pthread_t		monitor;
+	t_env		env;
+	pthread_t	monitor;
+	int			num_philos;
 
-	env.philos = malloc(sizeof(t_philo) * 250);
-	env.forks = malloc(sizeof(pthread_mutex_t) * 250);
-	env.args = malloc(sizeof(t_thread_arg) * 250);
+	if (ac != 5 && ac != 6)
+		return (ft_error("Wrong argument count\n"));
+	if (check_args(av))
+		return (ft_error("Error: End of the program\n"));
+	num_philos = ft_atoi(av[1]);
+	if (num_philos == 0)
+		return (0);
+	env.philos = malloc(sizeof(t_philo) * num_philos);
+	env.forks = malloc(sizeof(pthread_mutex_t) * num_philos);
+	env.args = malloc(sizeof(t_thread_arg) * num_philos);
 	env.prog = malloc(sizeof(t_program));
 	if (!env.philos || !env.forks || !env.args || !env.prog)
 		return (free_all(env), ft_error("Allocation failed\n"));
-	if (ac != 5 && ac != 6)
-		return (free_all(env), ft_error("Wrong argument count\n"));
-	if (check_args(av))
-		return (free_all(env), ft_error("Error: End of the program\n"));
 	if (!setup_env(&env, av))
 		return (0);
 	env.monitor = &monitor;
