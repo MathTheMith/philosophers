@@ -29,9 +29,9 @@ test_case() {
     ((TOTAL++))
     
     if [ -z "$meals" ]; then
-        output=$(timeout 5 ./philo $philos $die $eat $sleep 2>&1)
+        output=$(timeout 3 ./philo $philos $die $eat $sleep 2>&1)
     else
-        output=$(timeout 5 ./philo $philos $die $eat $sleep $meals 2>&1)
+        output=$(timeout 3 ./philo $philos $die $eat $sleep $meals 2>&1)
     fi
     
     if [ "$should_die" = "yes" ]; then
