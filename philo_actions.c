@@ -29,12 +29,11 @@ static void	philo_think(t_philo *philo, t_program *prog)
 	print_status(philo, prog, "is thinking");
 	if (philo->num_of_philos % 2 == 0)
 		return ;
-	think_time = 0;
-	if (philo->time_to_eat > philo->time_to_sleep)
-		think_time = (philo->time_to_eat - philo->time_to_sleep) / 2;
+	think_time = 5;
 	if (think_time > 0)
 		ft_usleep(think_time, prog);
 }
+
 
 static int	handle_single_philo_routine(t_philo *philo, t_program *prog)
 {

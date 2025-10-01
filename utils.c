@@ -70,6 +70,7 @@ void	ft_usleep(size_t milliseconds, t_program *prog)
 	{
 		if (is_dead(prog))
 			break ;
-		usleep(500);
+		usleep(100);
 	}
 }
+

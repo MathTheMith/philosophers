@@ -67,8 +67,10 @@ void	*philo_routine(void *arg)
 	args = (t_thread_arg *)arg;
 	philo = args->philo;
 	prog = args->prog;
-	if (philo->id % 2 == 0)
-		ft_usleep(philo->time_to_eat / 2, prog);
+
+	if (philo->id % 2 != 0)
+		ft_usleep(10, prog);
+
 	while (!is_dead(prog))
 	{
 		if (!philo_cycle(philo, prog))
