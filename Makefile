@@ -3,28 +3,29 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/12/12 07:28:08 by math              #+#    #+#              #
-#    Updated: 2025/09/30 23:39:49 by marvin           ###   ########.fr        #
+#    Created: 2025/10/01 12:48:23 by mvachon           #+#    #+#              #
+#    Updated: 2025/10/01 12:48:26 by mvachon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+
 NAME    =   philo
 
-HEADER    = philo.h
+HEADER    = include/philo.h
 
 CFLAGS  =   -Wall -Wextra -Werror
 
-
-SRC     =   main.c \
-			inits.c \
-			utils.c \
-			routine.c \
-			philo_actions.c \
-			fork_utils.c \
-			fork_management.c \
-
+SRC     =   srcs/main.c \
+			srcs/setup.c \
+			srcs/inits.c \
+			srcs/threads.c \
+			srcs/utils.c \
+			srcs/routine.c \
+			srcs/philo_actions.c \
+			srcs/fork_utils.c \
+			srcs/fork_management.c
 
 DIR_OBJ = obj
 OBJ     = $(SRC:%.c=$(DIR_OBJ)/%.o)
@@ -45,7 +46,7 @@ $(NAME): $(OBJ)
 	@echo "$(BLUE)🔧 Linking...$(NC)"
 	$(CC) $(CFLAGS) $(OBJ) -o $@
 
-$(DIR_OBJ)/%.o: %.c $(HEADER)
+$(DIR_OBJ)/%.o: %.c $(HEADER) Makefile
 	@mkdir -p $(dir $@)
 	@echo "$(GRAY)🛠️  Compilation de $<$(NC)"
 	@$(CC) $(CFLAGS) -c $< -o $@
